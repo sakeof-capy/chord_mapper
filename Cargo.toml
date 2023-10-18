@@ -1,5 +1,5 @@
 [package]
-name = "rust_parser"
+name = "rust_parser_mine"
 version = "0.1.0"
 edition = "2021"
 description = "Parser educational project."

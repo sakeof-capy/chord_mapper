@@ -48,7 +48,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_parser"
+name = "rust_parser_mine"
 version = "0.1.0"
 dependencies = [
  "peg",
