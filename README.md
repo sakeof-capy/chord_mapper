@@ -1,6 +1,6 @@
 ### rust_parser
 
-## Description
+### Description
 Parser educational project
 
-## Sample
+### Sample
