@@ -1,11 +1,15 @@
 [package]
-name = "rust_parser_mine"
+name = "chord_mapper"
 version = "0.1.0"
 edition = "2021"
-description = "Parser educational project."
+description = "Chord Mapper is a Rust project that provides a command-line utility for parsing chord notations and mapping them to the individual musical notes they consist of. "
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.75"
+clap = "4.4.7"
 peg = "0.8.2"
+pest = "2.6"
+pest_derive = "2.6"
