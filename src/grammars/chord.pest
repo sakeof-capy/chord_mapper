@@ -1,0 +1,26 @@
+/// Represents the root rule for parsing a chord notation.
+root = { SOI ~ delimitor* ~ chord ~ delimitor* ~ EOI }
+
+/// Matches any number of spaces used as delimiters.
+delimitor = { " "+ }
+
+/// Defines the structure of a chord, which can be either a `major_chord` or a `minor_chord`.
+chord = { minor_chord | major_chord }
+
+/// Represents a major chord consisting of a `tonic`.
+major_chord = { tonic }
+
+/// Represents a minor chord consisting of a `tonic` followed by 'm'.
+minor_chord = { tonic ~ "m" }
+
+/// Specifies the core note of a chord, which can be a `sharped_note`, `flatted_note`, or `bare_note`.
+tonic = { sharped_note | flatted_note | bare_note }
+
+/// Matches bare note names, such as 'A', 'B', 'C', 'D', 'E', 'F', 'G', or 'H'.
+bare_note = { "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" }
+
+/// Matches sharped note names, like 'A#', 'C#', 'D#', 'F#', or 'G#'.
+sharped_note = { ("A" | "C" | "D" | "F" | "G") ~ "#" }
+
+/// Matches flatted note names, including 'Db', 'Eb', 'Gb', 'Ab', or 'Bb'.
+flatted_note = { ("D" | "E" | "G" | "A" | "B") ~ "b" }
