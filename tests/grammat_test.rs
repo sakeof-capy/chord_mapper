@@ -13,8 +13,11 @@ fn check_str_matches_the_rule(note: &str, rule: Rule) -> anyhow::Result<bool> {
 
 fn test_template_rule_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::Result<()> {
     for note in samples {
-        assert!(check_str_matches_the_rule(note, rule)?, 
-                "Bare note {} not parsed.", note);
+        assert!(
+            check_str_matches_the_rule(note, rule)?,
+            "Bare note {} not parsed.",
+            note
+        );
     }
 
     Ok(())
@@ -23,7 +26,11 @@ fn test_template_rule_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::Resul
 fn test_template_rule_not_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::Result<()> {
     for note in samples {
         let check = check_str_matches_the_rule(note, rule);
-        assert!(check.is_err() || !check.unwrap(), "Non-bare note {} parsed.", note);
+        assert!(
+            check.is_err() || !check.unwrap(),
+            "Non-bare note {} parsed.",
+            note
+        );
     }
 
     Ok(())
@@ -38,7 +45,8 @@ fn bare_notes_test() -> anyhow::Result<()> {
 #[test]
 fn non_bare_notes_test() -> anyhow::Result<()> {
     let non_bare_notes = vec![
-        "Ab", "Bb", "Db", "Eb", "Gb", "A#", "C#", "D#", "F#", "G#", "E#", "B#", "Cb", "Fb", "H", "AA", "RCDSGSFD"
+        "Ab", "Bb", "Db", "Eb", "Gb", "A#", "C#", "D#", "F#", "G#", "E#", "B#", "Cb", "Fb", "H",
+        "AA", "RCDSGSFD",
     ];
 
     test_template_rule_not_matching(&non_bare_notes, Rule::bare_note)
@@ -70,7 +78,10 @@ fn non_sharpable_notes_test() -> anyhow::Result<()> {
 
 #[test]
 fn tonic_test() -> anyhow::Result<()> {
-    let tonics = vec!["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb", "Gb"];
+    let tonics = vec![
+        "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb",
+        "Gb",
+    ];
     test_template_rule_matching(&tonics, Rule::tonic)
 }
 
@@ -83,36 +94,43 @@ fn non_tonic_test() -> anyhow::Result<()> {
 #[test]
 fn minor_chord_test() -> anyhow::Result<()> {
     let minor_chords = vec![
-        "Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Abm", "Bbm", "Dbm", "Ebm", "Gbm"
+        "Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Abm", "Bbm",
+        "Dbm", "Ebm", "Gbm",
     ];
     test_template_rule_matching(&minor_chords, Rule::minor_chord)
 }
 
 #[test]
 fn non_minor_chord_test() -> anyhow::Result<()> {
-    let non_minor_chords = vec!["A", "B", "C", "D", "E", "F", "G", "G#", "AA", "RCDSGSFD", "B#", "Fb"];
+    let non_minor_chords = vec![
+        "A", "B", "C", "D", "E", "F", "G", "G#", "AA", "RCDSGSFD", "B#", "Fb",
+    ];
     test_template_rule_not_matching(&non_minor_chords, Rule::minor_chord)
 }
 
 #[test]
 fn major_chord_test() -> anyhow::Result<()> {
     let major_chords = vec![
-        "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb", "Gb"
+        "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb",
+        "Gb",
     ];
     test_template_rule_matching(&major_chords, Rule::major_chord)
 }
 
 #[test]
 fn non_major_chord_test() -> anyhow::Result<()> {
-    let non_major_chords = vec!["Am", "Bm", "Cm", "Dm", "Em", "Fm", "Gm", "G#m", "AA", "RCDSGSFD", "B#", "Fb"];
+    let non_major_chords = vec![
+        "Am", "Bm", "Cm", "Dm", "Em", "Fm", "Gm", "G#m", "AA", "RCDSGSFD", "B#", "Fb",
+    ];
     test_template_rule_not_matching(&non_major_chords, Rule::major_chord)
 }
 
 #[test]
 fn chord_test() -> anyhow::Result<()> {
     let chords = vec![
-        "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb", "Gb",
-        "Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Abm", "Bbm", "Dbm", "Ebm", "Gbm"
+        "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "Ab", "Bb", "Db", "Eb",
+        "Gb", "Am", "A#m", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Abm",
+        "Bbm", "Dbm", "Ebm", "Gbm",
     ];
     test_template_rule_matching(&chords, Rule::chord)
 }

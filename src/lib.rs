@@ -1,3 +1,5 @@
+use core::fmt;
+
 use pest::Parser;
 use pest_derive::Parser;
 
@@ -7,33 +9,79 @@ pub struct ChordParser;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Note {
-    A, B, C, D, E, F, G,
-    ASHARP, CSHARP, DSHARP, FSHARP, GSHARP,
-    DFLAT, EFLAT, GFLAT, AFLAT, BFLAT
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    ASHARP,
+    CSHARP,
+    DSHARP,
+    FSHARP,
+    GSHARP,
+    DFLAT,
+    EFLAT,
+    GFLAT,
+    AFLAT,
+    BFLAT,
+}
+
+impl fmt::Display for Note {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Note::A => write!(f, "A"),
+            Note::B => write!(f, "B"),
+            Note::C => write!(f, "C"),
+            Note::D => write!(f, "D"),
+            Note::E => write!(f, "E"),
+            Note::F => write!(f, "F"),
+            Note::G => write!(f, "G"),
+            Note::ASHARP => write!(f, "A#"),
+            Note::CSHARP => write!(f, "C#"),
+            Note::DSHARP => write!(f, "D#"),
+            Note::FSHARP => write!(f, "F#"),
+            Note::GSHARP => write!(f, "G#"),
+            Note::DFLAT => write!(f, "Db"),
+            Note::EFLAT => write!(f, "Eb"),
+            Note::GFLAT => write!(f, "Gb"),
+            Note::AFLAT => write!(f, "Ab"),
+            Note::BFLAT => write!(f, "Bb"),
+        }
+    }
 }
 
 impl PartialEq for Note {
     fn eq(&self, other: &Self) -> bool {
         use Note::*;
-        match (self, other) {
-            (A, A) | (B, B) | (C, C) | (D, D) | (E, E) | (F, F) | (G, G) => true,
-
-            (ASHARP, BFLAT) | (BFLAT, ASHARP) |
-            (CSHARP, DFLAT) | (DFLAT, CSHARP) |
-            (DSHARP, EFLAT) | (EFLAT, DSHARP) |
-            (FSHARP, GFLAT) | (GFLAT, FSHARP) |
-            (GSHARP, AFLAT) | (AFLAT, GSHARP) => true,
-
-            _ => false,
-        }
+        matches!(
+            (self, other),
+            (A, A)
+                | (B, B)
+                | (C, C)
+                | (D, D)
+                | (E, E)
+                | (F, F)
+                | (G, G)
+                | (ASHARP, BFLAT)
+                | (BFLAT, ASHARP)
+                | (CSHARP, DFLAT)
+                | (DFLAT, CSHARP)
+                | (DSHARP, EFLAT)
+                | (EFLAT, DSHARP)
+                | (FSHARP, GFLAT)
+                | (GFLAT, FSHARP)
+                | (GSHARP, AFLAT)
+                | (AFLAT, GSHARP)
+        )
     }
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Chord {
     MajorChord(Note),
-    MinorChord(Note)
+    MinorChord(Note),
 }
 
 pub fn to_note(string_rep: &str) -> Option<Note> {
@@ -58,8 +106,8 @@ pub fn to_note(string_rep: &str) -> Option<Note> {
         "Gb" => Some(GFLAT),
         "Ab" => Some(AFLAT),
         "Bb" => Some(BFLAT),
-       
-        &_   => None
+
+        &_ => None,
     }
 }
 
@@ -87,7 +135,9 @@ fn next_note(note: Note) -> Note {
 }
 
 fn plus_perfect_fifth(note: Note) -> Note {
-    next_note(next_note(next_note(next_note(next_note(next_note(next_note(note)))))))
+    next_note(next_note(next_note(next_note(next_note(next_note(
+        next_note(note),
+    ))))))
 }
 
 fn plus_minor_third(note: Note) -> Note {
@@ -98,7 +148,7 @@ fn plus_major_third(note: Note) -> Note {
     next_note(plus_minor_third(note))
 }
 
-pub fn parse_root(input: &str) -> Result<Chord, pest::error::Error<Rule>> {
+pub fn parse_root(input: &str) -> Result<Chord, Box<pest::error::Error<Rule>>> {
     let mut pairs = ChordParser::parse(Rule::root, input)?;
 
     for pair in pairs.clone() {
@@ -117,24 +167,24 @@ pub fn parse_root(input: &str) -> Result<Chord, pest::error::Error<Rule>> {
                         return Ok(Chord::MajorChord(tonic_note));
                     }
                     _ => {
-                        return Err(pest::error::Error::new_from_span(
+                        return Err(Box::new(pest::error::Error::new_from_span(
                             pest::error::ErrorVariant::CustomError {
                                 message: String::from("Unknown chord rule"),
                             },
                             chord_pair.as_span(),
-                        ));
+                        )));
                     }
                 }
             }
         }
     }
 
-    Err(pest::error::Error::new_from_span(
+    Err(Box::new(pest::error::Error::new_from_span(
         pest::error::ErrorVariant::CustomError {
             message: String::from("No chord rule found"),
         },
         pairs.next().unwrap().as_span(),
-    ))
+    )))
 }
 
 pub fn map_chord_to_notes(chord: Chord) -> Vec<Note> {
@@ -143,7 +193,7 @@ pub fn map_chord_to_notes(chord: Chord) -> Vec<Note> {
             let minor_third = plus_minor_third(tonic);
             let perfect_fifth = plus_perfect_fifth(tonic);
             vec![tonic, minor_third, perfect_fifth]
-        },
+        }
         Chord::MajorChord(tonic) => {
             let major_third = plus_major_third(tonic);
             let perfect_fifth = plus_perfect_fifth(tonic);
