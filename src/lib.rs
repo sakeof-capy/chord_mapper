@@ -65,7 +65,6 @@
 //! let chord_c_sharp_minor = Chord::MinorChord(note_c_sharp);
 //! ```
 
-
 use core::fmt;
 use pest::Parser;
 use pest_derive::Parser;
