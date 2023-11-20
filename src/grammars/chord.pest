@@ -16,8 +16,8 @@ minor_chord = { tonic ~ "m" }
 /// Specifies the core note of a chord, which can be a `sharped_note`, `flatted_note`, or `bare_note`.
 tonic = { sharped_note | flatted_note | bare_note }
 
-/// Matches bare note names, such as 'A', 'B', 'C', 'D', 'E', 'F', 'G', or 'H'.
-bare_note = { "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" }
+/// Matches bare note names, such as 'A', 'B', 'C', 'D', 'E', 'F' or 'G'.
+bare_note = { "A" | "B" | "C" | "D" | "E" | "F" | "G"}
 
 /// Matches sharped note names, like 'A#', 'C#', 'D#', 'F#', or 'G#'.
 sharped_note = { ("A" | "C" | "D" | "F" | "G") ~ "#" }
