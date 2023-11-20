@@ -1,6 +1,6 @@
 [package]
 name = "chord_mapper"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Chord Mapper is a Rust project that provides a command-line utility for parsing chord notations and mapping them to the individual musical notes they consist of. "
 license = "MIT"
@@ -10,6 +10,5 @@ license = "MIT"
 [dependencies]
 anyhow = "1.0.75"
 clap = "4.4.7"
-peg = "0.8.2"
 pest = "2.6"
 pest_derive = "2.6"
