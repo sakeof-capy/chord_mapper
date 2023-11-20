@@ -1,5 +1,72 @@
-use core::fmt;
+//! # Chord Library
+//!
+//! This library provides functionality for working with musical chords.
+//!
+//! ## Example
+//!
+//! ```rust
+//! use my_chord_library::{Note, Chord, parse_root};
+//!
+//! // Parse a chord from a string
+//! let chord = parse_root("Cm")?;
+//!
+//! // Get the notes of the chord
+//! let notes = map_chord_to_notes(chord);
+//! ```
+//!
+//! ## Note Enum
+//!
+//! The `Note` enum represents musical notes:
+//!
+//! - A
+//! - B
+//! - C
+//! - D
+//! - E
+//! - F
+//! - G
+//! - ASHARP
+//! - CSHARP
+//! - DSHARP
+//! - FSHARP
+//! - GSHARP
+//! - DFLAT
+//! - EFLAT
+//! - GFLAT
+//! - AFLAT
+//! - BFLAT
+//!
+//! ## Chord Enum
+//!
+//! The `Chord` enum represents musical chords:
+//!
+//! - `MajorChord(Note)`
+//! - `MinorChord(Note)`
+//!
+//! ## Functions
+//!
+//! - `to_note(string_rep: &str) -> Option<Note>`: Converts a string representation to a `Note`.
+//! - `parse_root(input: &str) -> Result<Chord, Box<pest::error::Error<Rule>>>`: Parses a chord from a string.
+//! - `map_chord_to_notes(chord: Chord) -> Vec<Note>`: Maps a chord to its constituent notes.
+//! - `next_note(note: Note) -> Note`: Calculates the next note in the musical scale.
+//! - `plus_perfect_fifth(note: Note) -> Note`: Calculates the note a perfect fifth above the given note.
+//! - `plus_minor_third(note: Note) -> Note`: Calculates the note a minor third above the given note.
+//! - `plus_major_third(note: Note) -> Note`: Calculates the note a major third above the given note.
+//!
+//! ## Example Usage
+//!
+//! ```rust
+//! use my_chord_library::{Note, Chord};
+//!
+//! let note_a = Note::A;
+//! let note_c_sharp = Note::CSHARP;
+//!
+//! let chord_a_major = Chord::MajorChord(note_a);
+//! let chord_c_sharp_minor = Chord::MinorChord(note_c_sharp);
+//! ```
 
+
+use core::fmt;
 use pest::Parser;
 use pest_derive::Parser;
 
