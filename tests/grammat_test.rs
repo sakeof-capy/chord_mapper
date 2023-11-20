@@ -20,7 +20,6 @@ fn test_template_rule_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::Resul
     Ok(())
 }
 
-
 fn test_template_rule_not_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::Result<()> {
     for note in samples {
         let check = check_str_matches_the_rule(note, rule);
@@ -32,14 +31,14 @@ fn test_template_rule_not_matching(samples: &Vec<&str>, rule: Rule) -> anyhow::R
 
 #[test]
 fn bare_notes_test() -> anyhow::Result<()> {
-    let bare_notes = vec!["A", "B", "C", "D", "E", "F", "G", "H"];
+    let bare_notes = vec!["A", "B", "C", "D", "E", "F", "G"];
     test_template_rule_matching(&bare_notes, Rule::bare_note)
 }
 
 #[test]
 fn non_bare_notes_test() -> anyhow::Result<()> {
     let non_bare_notes = vec![
-        "Ab", "Bb", "Db", "Eb", "Gb", "A#", "C#", "D#", "F#", "G#", "E#", "B#", "Cb", "Fb", "AA", "RCDSGSFD"
+        "Ab", "Bb", "Db", "Eb", "Gb", "A#", "C#", "D#", "F#", "G#", "E#", "B#", "Cb", "Fb", "H", "AA", "RCDSGSFD"
     ];
 
     test_template_rule_not_matching(&non_bare_notes, Rule::bare_note)
